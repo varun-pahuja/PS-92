@@ -1,0 +1,33 @@
+flowchart TB
+  subgraph P["Presentation Layer — Browser SPA"]
+    A1["React + Vite + TypeScript"]
+    A2["Mobile-responsive UI"]
+    A3["Bilingual EN / HI"]
+    A4["GIGW accessibility toolbar"]
+  end
+  subgraph L["Application / Decision Layer"]
+    B1["Scheme Recommender Engine<br/>explainable weighted decision tree"]
+    B2["EMI Calculator<br/>reducing-balance amortisation"]
+    B3["Partner Router<br/>haversine + health-aware scoring"]
+  end
+  subgraph D["Data Layer — client-side, swappable"]
+    C1["Scheme Registry<br/>NSFDC slabs, rates, limits"]
+    C2["Partner Registry<br/>names real · health mock"]
+    C3["i18n bundles"]
+  end
+  subgraph I["Integration Layer — future"]
+    E1["NSFDC / SCA data feed"]
+    E2["PM-SURAJ APIs"]
+    E3["Partner NPA / fund-utilisation"]
+  end
+  A1 --> B1
+  A1 --> B2
+  A1 --> B3
+  B1 --> C1
+  B2 --> C1
+  B3 --> C2
+  A3 --> C3
+  C1 -.-> E1
+  C2 -.-> E3
+  E2 -.-> A1
+  I -.-> D

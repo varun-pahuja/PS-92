@@ -1,0 +1,54 @@
+                            LIST OF REGIONAL RURAL BANKS
+
+1    Bihar Gramin Bank,                        2    Maharashtra Gramin Bank,
+     Shri Vishnu Commercial Complex,                Plot No.35, Jeewan Shri Town Centre,
+     NH-30, New Bypass,                             CIDCO, Aurangabad,
+     Near Bp Highway Services Petrol Pump,          Maharashtra – 431 003.
+     Asochak, Patna - 800016
+3    Jharkhand Gramin Bank,                    4    Haryana Gramin Bank,
+     Zila Parishad Market Complex,                  Near Bajrang Bhawan,
+     3rd Floor, Kutchery Road,                      Delhi Road, Rohtak, Haryana –124 001
+     Ranchi- 834001, Jharkhand.
+5    Gujarat Gramin Bank,                      6    Telangana Grameena Bank,
+     Head Office,                                   H.No.2-1-520, 2nd Floor,
+     Sky Line Building, 2nd Floor,                  Vijaya Sri Sai Celestia, Street No.9,
+     Near Shital Guest House,                       Shankermut Road, Nallakunta, Hyderabad,
+     Bharuch - 392001, Gujarat.                     Telangana – 500044.
+7    Rajasthan Gramin Bank,                    8    Uttar Pradesh Gramin Bank,
+     Tulsi Tower, 9th B Road                        2nd & 3rd Floor, NBCC Commercial
+     Sardarpura, Jodhpur – 342003                   Complex, Vardan Khand,
+     (Rajasthan)                                    Gomti Nagar Extension,
+                                                    Lucknow–229001(Uttar Pradesh)
+9    Kerala Grameena Bank,                     10   Uttarakhand Gramin Bank,
+     PB No.10, KGpB Towers, AK Road,                18-New Road, Dehradun, Uttarakhand.
+     Uphill, Malappuram,Kerala – 676505.
+11   Tripura Gramin Bank,                      12   Karnataka Grameena Bank, Head Office,
+     H.O. Airport Road, PO Abhaynagar,              CA 20, Vijayanagar IInd Stage,
+     Agartala, Tripura (W) Pin – 799 005.           Musure – 570017 (Karnataka)
+13   Assam Gramin Bank,                        14   Andhra Pradesh Grameena Bank,
+     HO, G.S. Road, Bhangagarh,                     4th Floor, Raghu Mansion,
+     Guwahati- 781 005.(Assam)                      4-1, Broadipet,
+                                                    Guntur -522 002 (Andhra Pradesh)
+15   Punjab Gramin Bank,                       16   Tamil Nadu Grama Bank,
+     HO Jalandhar Road,                             6, Yercaud Road, Hasthasmpatti,
+     Kapurthala – 144 601. (Punjab)                 Salem – 636007 (Tamil Nadu)
+17   Madhaya Pradesh Gramin Bank.              18   Himachal Pradesh Gramin Bank,
+     C21, Business Park, C21 Square opposite        Jail Road (Panjethi), PO – Talyahar
+     Hotel Radisson Blue, MR-10                     Mandi 175001 (Himachal Pradesh)
+     Indore- 452010, Madhaya Pradesh
+19   Puducherry Grama Bank,                    20   West Bengal Gramin Bank
+     No.441, Mahatma Gandhi Road,                   Natabar Paul Road, Chatterjee Para More,
+     Muthialpet, Puducherry – 605 003               Tikiapara, Howrah – 711101 (WB)
+21   Chhattisgarh Gramin Bank,                 22   Manipur Rural Bank, Keishampat, Keisham
+     Corporate Office Raipur,                       Leikai, Imphal, Manipur 795001
+     Plot No.-47, Sector-24, Atal Nagar,
+     Nava Raipur-492013
+23   Meghalaya Rural Bank,                     24   J&K Grameen Bank
+     M.T.C Building, 2nd Floor, Police Bazar,        Jammu & Kashmir Near Fruit Complex,
+     Shillong-793001                                 Narwal, Jammu (J&K) -180006
+25 Odisha Grameen Bank, Bhubaneswar.            26   Mizoram Rural Bank, Mizoram
+     7R25-H75, Jagamara, Sunderpada Road,            MINECO, Khatla Aizawl - 796001.
+     Gandamuda, Pokhhariput, Bhubaneshwar
+     -751030,Odisha
+Total=26
+

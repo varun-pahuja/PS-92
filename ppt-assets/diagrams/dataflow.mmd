@@ -1,0 +1,34 @@
+flowchart LR
+  subgraph IN["1. INPUT (user profile)"]
+    I1["SC status & annual family income"]
+    I2["Purpose: business / education"]
+    I3["Project / course cost"]
+    I4["Recognised course?"]
+    I5["State / location"]
+  end
+  subgraph PR["2. PROCESS"]
+    P1["Hard eligibility gates<br/>SC community · income ≤ ₹5L · cost > 0"]
+    P2["Scheme band match<br/>cost ↔ NSFDC slab"]
+    P3["Weighted fit scoring<br/>cost 32% · rate 30% · moratorium 18% · purpose 20%"]
+    P4["EMI amortisation<br/>rate · tenure · moratorium mode"]
+    P5["Health-aware routing<br/>distance 50% · health 35% · authorisation 15%"]
+    P1 --> P2 --> P3 --> P4 --> P5
+  end
+  subgraph OUT["3. OUTPUT"]
+    O1["Ranked schemes<br/>fit % + reasons + blockers"]
+    O2["EMI + total interest<br/>year-wise schedule"]
+    O3["Ranked partners<br/>route score + before/after"]
+  end
+  ACT["4. ACTION — Apply via PM-SURAJ · visit nearest healthy partner · track application ID"]
+  I1 --> P1
+  I2 --> P2
+  I3 --> P2
+  I4 --> P2
+  I5 --> P5
+  P3 --> O1
+  P4 --> O2
+  P5 --> O3
+  O1 --> ACT
+  O2 --> ACT
+  O3 --> ACT
+  OUT -. "adjust inputs" .-> IN
