@@ -19,6 +19,7 @@ import {
   type LoanPurpose,
   type SchemeId,
 } from "./schemes";
+import { msg, type IMessage } from "../../i18n/message";
 
 export type ApplicantType = "individual" | "partnership" | "cooperative";
 
@@ -43,8 +44,8 @@ export interface IRecommendation {
   /** Sanctionable loan after the 90% LTV cap and hard loan cap. */
   loanAmount: number;
   ownContribution: number;
-  reasons: string[];
-  blockers: string[];
+  reasons: IMessage[];
+  blockers: IMessage[];
 }
 
 export interface IEngineResult {
@@ -53,9 +54,9 @@ export interface IEngineResult {
   /** Best eligible scheme, if any. */
   primary: IRecommendation | null;
   /** Populated when no scheme is eligible. */
-  globalBlockers: string[];
+  globalBlockers: IMessage[];
   /** How each factor contributed to the top score (for the explainability UI). */
-  scoreBreakdown: { label: string; weight: number; value: number }[];
+  scoreBreakdown: { labelKey: string; weight: number; value: number }[];
 }
 
 const WEIGHTS = {
@@ -96,20 +97,16 @@ function purposeFit(scheme: IScheme, purpose: LoanPurpose): number {
  */
 export function recommend(profile: IProfile): IEngineResult {
   const recommendations: IRecommendation[] = [];
-  const globalBlockers: string[] = [];
+  const globalBlockers: IMessage[] = [];
 
   if (!profile.isSC) {
-    globalBlockers.push(
-      "NSFDC schemes are only for applicants belonging to the Scheduled Caste community.",
-    );
+    globalBlockers.push(msg("block.notSC"));
   }
   if (profile.annualFamilyIncome > INCOME_CEILING) {
-    globalBlockers.push(
-      `Annual family income exceeds the ₹5.00 lakh ceiling (entered: ₹${profile.annualFamilyIncome.toLocaleString("en-IN")}).`,
-    );
+    globalBlockers.push(msg("block.incomeCeiling", { income: profile.annualFamilyIncome }));
   }
   if (profile.estimatedCost <= 0) {
-    globalBlockers.push("Estimated project / course cost must be greater than zero.");
+    globalBlockers.push(msg("block.costInvalid"));
   }
 
   if (globalBlockers.length > 0) {
@@ -123,8 +120,8 @@ export function recommend(profile: IProfile): IEngineResult {
   }
 
   for (const scheme of SCHEMES) {
-    const reasons: string[] = [];
-    const blockers: string[] = [];
+    const reasons: IMessage[] = [];
+    const blockers: IMessage[] = [];
 
     const pFit = purposeFit(scheme, profile.purpose);
     const cFit = costFit(scheme, profile.estimatedCost);
@@ -138,42 +135,63 @@ export function recommend(profile: IProfile): IEngineResult {
     // ---- explainability trails -------------------------------------------
     if (pFit === 0) {
       blockers.push(
-        scheme.purposes.includes("education")
-          ? "This is an education-only scheme; your request is for a business/enterprise unit."
-          : "This scheme funds business/enterprise units; your request is for education.",
+        msg(
+          scheme.purposes.includes("education")
+            ? "block.purpose.educationOnly"
+            : "block.purpose.businessOnly",
+        ),
       );
     } else {
       reasons.push(
-        `${scheme.nameEn} funds the ${profile.purpose === "education" ? "education" : "business/enterprise"} use-case you selected.`,
+        msg(profile.purpose === "education" ? "why.purpose.education" : "why.purpose.business"),
       );
     }
 
     if (profile.purpose === "business") {
       if (profile.estimatedCost <= scheme.maxCost && profile.estimatedCost >= scheme.minCost) {
         reasons.push(
-          `Your project cost of ₹${profile.estimatedCost.toLocaleString("en-IN")} falls within the scheme band ₹${scheme.minCost.toLocaleString("en-IN")}–₹${scheme.maxCost.toLocaleString("en-IN")}.`,
+          msg("why.costInBand", {
+            cost: profile.estimatedCost,
+            min: scheme.minCost,
+            max: scheme.maxCost,
+          }),
         );
       } else {
         blockers.push(
-          profile.estimatedCost > scheme.maxCost
-            ? `Project cost exceeds the maximum ₹${scheme.maxCost.toLocaleString("en-IN")} for this scheme.`
-            : `Project cost is below the minimum ₹${scheme.minCost.toLocaleString("en-IN")} for this scheme.`,
+          msg(
+            profile.estimatedCost > scheme.maxCost
+              ? "block.costAboveMax"
+              : "block.costBelowMin",
+            profile.estimatedCost > scheme.maxCost
+              ? { max: scheme.maxCost }
+              : { min: scheme.minCost },
+          ),
         );
       }
     } else if (profile.courseRecognised === false) {
-      blockers.push("The course is not on NSFDC's list of recognised professional/technical courses.");
+      blockers.push(msg("block.courseNotRecognised"));
     }
 
     if (capped) {
       reasons.push(
-        `Loan is capped at ₹${scheme.maxLoan.toLocaleString("en-IN")} (90% LTV / scheme ceiling), so your own contribution rises to ₹${(profile.estimatedCost - loan).toLocaleString("en-IN")}.`,
+        msg("why.loanCapped", {
+          cap: scheme.maxLoan,
+          own: Math.round(profile.estimatedCost - loan),
+        }),
       );
     }
 
     reasons.push(
-      `Interest rate ${scheme.beneficiaryRate}% p.a. is at the ${scheme.beneficiaryRate <= 8 ? "concessional" : "higher"} end of the 6.5%–15% range.`,
+      msg(scheme.beneficiaryRate <= 8 ? "why.rateConcessional" : "why.rateHigher", {
+        rate: scheme.beneficiaryRate,
+      }),
     );
-    reasons.push(`Moratorium of ${scheme.moratoriumMonths} month(s) with repayment over ${Math.round(scheme.maxTenureMonths / 12)}+ year(s).`);
+    reasons.push(
+      msg("why.moratorium", {
+        months: scheme.moratoriumMonths,
+        years: Math.round(scheme.maxTenureMonths / 12),
+      }),
+    );
 
     const eligible = blockers.length === 0;
 
@@ -199,10 +217,10 @@ export function recommend(profile: IProfile): IEngineResult {
     primary === null
       ? []
       : [
-          { label: "Project-cost fit", weight: WEIGHTS.costFit, value: costFit(primary.scheme, profile.estimatedCost) },
-          { label: "Interest-rate fit", weight: WEIGHTS.rateFit, value: rateFit(primary.scheme) },
-          { label: "Moratorium benefit", weight: WEIGHTS.moratoriumFit, value: moratoriumFit(primary.scheme) },
-          { label: "Purpose match", weight: WEIGHTS.purposeFit, value: purposeFit(primary.scheme, profile.purpose) },
+          { labelKey: "score.costFit", weight: WEIGHTS.costFit, value: costFit(primary.scheme, profile.estimatedCost) },
+          { labelKey: "score.rateFit", weight: WEIGHTS.rateFit, value: rateFit(primary.scheme) },
+          { labelKey: "score.moratoriumFit", weight: WEIGHTS.moratoriumFit, value: moratoriumFit(primary.scheme) },
+          { labelKey: "score.purposeFit", weight: WEIGHTS.purposeFit, value: purposeFit(primary.scheme, profile.purpose) },
         ];
 
   return { profile, recommendations, primary, globalBlockers, scoreBreakdown };

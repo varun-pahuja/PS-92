@@ -52,15 +52,15 @@ export function LocatorPage({
 
   function useMyLocation() {
     if (!navigator.geolocation) {
-      setGeoNote("Geolocation not available — pick your state instead.");
+      setGeoNote(t("loc.geoUnavailable"));
       return;
     }
     navigator.geolocation.getCurrentPosition(
       (pos) => {
         setCenter([pos.coords.latitude, pos.coords.longitude]);
-        setGeoNote("Using your device location.");
+        setGeoNote(t("loc.geoUsing"));
       },
-      () => setGeoNote("Location permission denied — pick your state instead."),
+      () => setGeoNote(t("loc.geoDenied")),
       { timeout: 6000 },
     );
   }
@@ -142,7 +142,7 @@ export function LocatorPage({
 
         <div className="form-actions">
           <button type="button" className="btn btn--outline btn--pill" onClick={useMyLocation}>
-            📍 {t("loc.useMyLocation")}
+            {t("loc.useMyLocation")}
           </button>
         </div>
         <p className="field__help">{geoNote || t("loc.selectPoint")}</p>
@@ -203,11 +203,11 @@ export function LocatorPage({
                   <Score label={t("loc.distance")} value={`${r.distanceKm.toFixed(1)} km`} />
                   <Score label={t("loc.routeScore")} value={`${r.routeScore}/100`} good />
                   <Score label={t("loc.health")} value={`${r.partner.fundHealth}/100`} good={r.partner.fundHealth >= 60} />
-                  <Score label="Overdue" value={`${r.partner.overduePct}%`} good={r.partner.overduePct < 5} />
+                  <Score label={t("loc.overdue")} value={`${r.partner.overduePct}%`} good={r.partner.overduePct < 5} />
                 </div>
                 <ul className="ticks ticks--compact">
-                  {r.reasons.map((reason) => (
-                    <li key={reason}>{reason}</li>
+                  {r.reasons.map((reason, i) => (
+                    <li key={`${reason.key}-${i}`}>{t(reason.key, reason.params)}</li>
                   ))}
                 </ul>
               </div>

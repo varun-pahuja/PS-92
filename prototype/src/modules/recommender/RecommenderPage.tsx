@@ -177,8 +177,8 @@ export function RecommenderPage({
           <div className="callout callout--warn">
             <h3>{t("result.noMatch")}</h3>
             <ul className="ticks">
-              {result.globalBlockers.map((b) => (
-                <li key={b}>{b}</li>
+              {result.globalBlockers.map((b, i) => (
+                <li key={`${b.key}-${i}`}>{t(b.key, b.params)}</li>
               ))}
             </ul>
             <p className="muted">{t("result.noMatchHelp")}</p>
@@ -207,8 +207,8 @@ export function RecommenderPage({
               <div>
                 <h4 className="mini-title">{t("result.why")}</h4>
                 <ul className="ticks ticks--why">
-                  {result.primary.reasons.map((r) => (
-                    <li key={r}>{r}</li>
+                  {result.primary.reasons.map((r, i) => (
+                    <li key={`${r.key}-${i}`}>{t(r.key, r.params)}</li>
                   ))}
                 </ul>
               </div>
@@ -216,9 +216,9 @@ export function RecommenderPage({
                 <h4 className="mini-title">{t("result.scoreBreakdown")}</h4>
                 <div className="bars">
                   {result.scoreBreakdown.map((b) => (
-                    <div className="bar" key={b.label}>
+                    <div className="bar" key={b.labelKey}>
                       <div className="bar__top">
-                        <span>{b.label}</span>
+                        <span>{t(b.labelKey)}</span>
                         <span className="bar__meta">
                           {Math.round(b.value * 100)}% · {t("result.weight")} {Math.round(b.weight * 100)}%
                         </span>
@@ -262,13 +262,13 @@ export function RecommenderPage({
                         {r.eligible ? `${r.fitScore} · ${t("result.eligible")}` : t("result.ineligible")}
                       </span>
                     </div>
-                    {!r.eligible && r.blockers.length > 0 && (
-                      <ul className="ticks ticks--block">
-                        {r.blockers.map((b) => (
-                          <li key={b}>{b}</li>
-                        ))}
-                      </ul>
-                    )}
+                      {!r.eligible && r.blockers.length > 0 && (
+                        <ul className="ticks ticks--block">
+                          {r.blockers.map((b, i) => (
+                            <li key={`${b.key}-${i}`}>{t(b.key, b.params)}</li>
+                          ))}
+                        </ul>
+                      )}
                     {r.eligible && (
                       <p className="alt__meta">
                         {r.scheme.beneficiaryRate}% p.a. · {inr(r.loanAmount)} · {r.scheme.moratoriumMonths}{" "}
@@ -289,8 +289,8 @@ export function RecommenderPage({
               {result.recommendations
                 .flatMap((r) => r.blockers)
                 .slice(0, 4)
-                .map((b) => (
-                  <li key={b}>{b}</li>
+                .map((b, i) => (
+                  <li key={`${b.key}-${i}`}>{t(b.key, b.params)}</li>
                 ))}
             </ul>
           </div>
@@ -338,6 +338,7 @@ function Stat({ label, value }: { label: string; value: string }) {
 }
 
 function EmptyState({ title, hint }: { title: string; hint: string }) {
+  const { t } = useI18n();
   return (
     <div className="empty">
       <div className="empty__mark" aria-hidden="true">
@@ -345,7 +346,7 @@ function EmptyState({ title, hint }: { title: string; hint: string }) {
       </div>
       <h3>{title}</h3>
       <p>{hint}</p>
-      <p className="muted small">Tip: try the cost chips to see the recommendation change instantly.</p>
+      <p className="muted small">{t("result.tip")}</p>
     </div>
   );
 }

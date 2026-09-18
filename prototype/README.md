@@ -27,7 +27,7 @@ npm run dev      # http://localhost:5173
 Other commands:
 
 ```bash
-npm test         # 24 unit tests (engine, EMI maths, geo routing)
+npm test         # 25 unit tests (engine, EMI maths, geo routing)
 npm run build    # type-check + production build to dist/
 npm run preview  # serve the production build
 ```
@@ -45,7 +45,7 @@ prototype/src
 │   ├── recommender/             rule engine + scheme data
 │   │   ├── schemes.ts           NSFDC scheme slabs (verbatim, with source URLs)
 │   │   ├── engine.ts            explainable weighted decision tree
-│   │   ├── engine.test.ts       9 tests
+│   │   ├── engine.test.ts       10 tests
 │   │   └── RecommenderPage.tsx
 │   ├── emi/                     amortisation engine
 │   │   ├── emi.ts               reducing-balance EMI, 2 moratorium models
@@ -63,8 +63,15 @@ prototype/src
 │   ├── components/              Header, Footer, Disclaimer, GovtCrest
 │   └── utils/format.ts          Indian currency/number formatting
 ├── i18n/                        English + Hindi dictionary (extensible)
+│   ├── index.tsx                `t(key, params)` with `{param}` interpolation
+│   └── message.ts               IMessage — domain logic emits keys, not English
 └── App.tsx                      tab shell & cross-module hand-off
 ```
+
+> **Bilingual by construction:** the recommender and router return `{ key, params }`
+> messages instead of English strings, so the *same* reasoning trail renders in
+> English or Hindi. The engine never knows which language is active. A regression
+> test asserts no message key ever contains English prose.
 
 ### Why these choices
 

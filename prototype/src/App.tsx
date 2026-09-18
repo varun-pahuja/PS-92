@@ -91,7 +91,7 @@ function Hero({ onStart }: { onStart: () => void }) {
             <strong>13%</strong>
           </div>
           <div className="hero__card-row hero__card-row--muted">
-            <span>Partner health</span>
+            <span>{t("hero.partnerHealth")}</span>
             <strong>82/100</strong>
           </div>
         </div>

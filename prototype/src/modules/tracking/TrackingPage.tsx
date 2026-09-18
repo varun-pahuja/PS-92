@@ -47,9 +47,9 @@ export function TrackingPage() {
           <>
             <div className="track-head">
               <div>
-                <span className="eyebrow eyebrow--ok">Application ID</span>
+                <span className="eyebrow eyebrow--ok">{t("track.appIdLabel")}</span>
                 <h3 className="result-scheme">{DEMO_ID}</h3>
-                <p className="muted">Sharma Tailoring Unit · Micro Finance Scheme (MFS) · ₹90,000</p>
+                <p className="muted">{t("track.demoSummary")}</p>
               </div>
               <span className="pill pill--mid">{t("track.current")}</span>
             </div>
@@ -71,10 +71,7 @@ export function TrackingPage() {
               })}
             </ol>
 
-            <p className="muted small">
-              Routed to: <strong>UPSCFDC — Lucknow</strong> (fund health 82/100). Live integration will surface the
-              actual partner and disbursement ledger from PM-SURAJ / NSFDC.
-            </p>
+            <p className="muted small">{t("track.routed", { partner: "UPSCFDC — Lucknow", health: 82 })}</p>
           </>
         )}
       </section>

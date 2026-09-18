@@ -10,6 +10,7 @@
 
 import type { IPartner } from "./partners";
 import type { SchemeId } from "../recommender/schemes";
+import { msg, type IMessage } from "../../i18n/message";
 
 export interface IRouteQuery {
   lat: number;
@@ -28,7 +29,7 @@ export interface IRouteResult {
   routeScore: number;
   /** Which scheme authorisation matched. */
   schemeMatched: boolean;
-  reasons: string[];
+  reasons: IMessage[];
 }
 
 const EARTH_RADIUS_KM = 6371;
@@ -71,16 +72,19 @@ export function routePartners(
     const health = p.fundHealth / 100;
     const score = 100 * (0.5 * prox + 0.35 * health + 0.15 * (schemeMatched ? 1 : 0));
 
-    const reasons: string[] = [`${distanceKm.toFixed(1)} km from your location`];
+    const reasons: IMessage[] = [msg("partner.distance", { km: distanceKm.toFixed(1) })];
     reasons.push(
-      p.fundHealth >= 75
-        ? `Healthy fund utilisation (${p.fundHealth}/100) — low disbursement risk`
-        : p.fundHealth >= 50
-          ? `Moderate fund health (${p.fundHealth}/100) — verify current fund position`
-          : `Stressed fund position (${p.fundHealth}/100) — expect delays`,
+      msg(
+        p.fundHealth >= 75
+          ? "partner.healthHealthy"
+          : p.fundHealth >= 50
+            ? "partner.healthModerate"
+            : "partner.healthStressed",
+        { health: p.fundHealth },
+      ),
     );
-    if (schemeMatched && query.schemeId) reasons.push(`Authorised for ${query.schemeId}`);
-    if (p.overduePct >= 5) reasons.push(`Overdue book ${p.overduePct}% — flagged`);
+    if (schemeMatched && query.schemeId) reasons.push(msg("partner.authorised", { scheme: query.schemeId }));
+    if (p.overduePct >= 5) reasons.push(msg("partner.overdue", { pct: p.overduePct }));
 
     results.push({
       partner: p,
@@ -112,7 +116,7 @@ export function nearestPartner(
         distanceKm,
         routeScore: 0,
         schemeMatched: true,
-        reasons: [`${distanceKm.toFixed(1)} km (naive nearest match)`],
+        reasons: [msg("partner.naiveNearest", { km: distanceKm.toFixed(1) })],
       };
     }
   }

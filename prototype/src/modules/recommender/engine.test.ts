@@ -74,13 +74,29 @@ describe("recommend() — eligibility gates", () => {
     const res = recommend({ ...base, annualFamilyIncome: 600_000 });
     expect(res.primary).toBeNull();
     expect(res.recommendations).toHaveLength(0);
-    expect(res.globalBlockers.join(" ")).toMatch(/5\.00 lakh/);
+    const income = res.globalBlockers.find((b) => b.key === "block.incomeCeiling");
+    expect(income).toBeDefined();
+    expect(income?.params?.income).toBe(600_000);
   });
 
   it("blocks non-SC applicants", () => {
     const res = recommend({ ...base, isSC: false });
     expect(res.primary).toBeNull();
-    expect(res.globalBlockers.join(" ")).toMatch(/Scheduled Caste/);
+    expect(res.globalBlockers.some((b) => b.key === "block.notSC")).toBe(true);
+  });
+
+  it("returns localisable message keys, never English prose", () => {
+    const eligible = recommend(base); // produces reasons across all schemes
+    const blocked = recommend({ ...base, annualFamilyIncome: 600_000 });
+    const all = [
+      ...blocked.globalBlockers,
+      ...eligible.recommendations.flatMap((r) => [...r.reasons, ...r.blockers]),
+    ];
+    expect(all.length).toBeGreaterThan(0);
+    for (const m of all) {
+      // keys are dotted identifiers like "why.costInBand" — no spaces, no ₹.
+      expect(m.key).toMatch(/^[a-z][A-Za-z0-9]*(\.[A-Za-z0-9]+)+$/);
+    }
   });
 
   it("returns no eligible scheme when the project exceeds all bands", () => {

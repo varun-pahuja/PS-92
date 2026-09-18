@@ -18,7 +18,7 @@ export function Header({
     <header className="site-header">
       <div className="topbar">
         <div className="topbar__inner">
-          <span className="topbar__badge">🇮🇳 {t("hero.badge")}</span>
+          <span className="topbar__badge">{t("hero.badge")}</span>
           <span className="topbar__helpline">{t("header.helpline")}</span>
         </div>
       </div>

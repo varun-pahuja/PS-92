@@ -18,6 +18,7 @@ Theme: Smart Automation · Category: Software · Organisation: Ministry of Socia
 | EMI chart + schedule | `ppt-assets/screenshots/03-emi-chart.png` | Slide 3 / 5 |
 | Partner locator + health routing | `ppt-assets/screenshots/04-partner-locator.png` | Slide 3 / 5 |
 | Hindi (bilingual) view | `ppt-assets/screenshots/05-hindi-locator.png` | Slide 5 |
+| Hindi recommender + reasoning | `ppt-assets/screenshots/08-hindi-recommender.png` | Slide 2 / 5 |
 | Application tracking | `ppt-assets/screenshots/06-track-application.png` | Slide 5 |
 | Mobile view | `ppt-assets/screenshots/07-mobile.png` | Slide 4 / 5 |
 
@@ -99,7 +100,7 @@ Team Member 6 — [FILL: Name]
 ### On-slide bullets — Tech stack
 - **Frontend:** React 18 + Vite + TypeScript (component-module architecture); plain CSS design tokens; GOV-style theme; EN/हिन्दी i18n.
 - **Logic layer:** pure TypeScript modules — recommender engine, EMI engine, geo router (framework-free, unit-tested).
-- **Testing:** Vitest — **24 unit tests** across engine, EMI maths and routing.
+- **Testing:** Vitest — **25 unit tests** across engine, EMI maths and routing.
 - **Mapping:** Leaflet + OpenStreetMap tiles — **no paid API key**.
 - **Charts:** hand-rolled SVG — zero chart dependency, renders offline.
 - **Data:** static TypeScript registries today → swappable for NSFDC/SCA feeds.
@@ -186,8 +187,8 @@ Team Member 6 — [FILL: Name]
 ### Visual (this slide carries the prototype evidence)
 - **Top band:** a 3-up screenshot strip — `02-recommender-result.png` · `03-emi-chart.png` · `04-partner-locator.png` (labelled *Recommender · EMI · Health-aware routing*).
 - **Middle:** before/after impact infographic — *"Nearest partner: health 49/100, NPA High"* → **"Routed partner: health 74/100, NPA Low"** (taken directly from the locator's Before vs After panel).
-- **Bottom:** `05-hindi-locator.png` + `06-track-application.png` as smaller insets, proving bilingual + tracking.
-- Three small stat chips: **5 schemes · ~91 channel partners · 24 passing unit tests**.
+- **Bottom:** `08-hindi-recommender.png` (Hindi UI **and Hindi reasoning bullets**) beside `06-track-application.png` as smaller insets, proving bilingual output + tracking.
+- Three small stat chips: **5 schemes · ~91 channel partners · 25 passing unit tests**.
 
 ### Speaker note
 "The before/after panel is the clearest proof: at the same location, the naive nearest partner is high-NPA, and our router sends the citizen 10 km to a healthy one."
